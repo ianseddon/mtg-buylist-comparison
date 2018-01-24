@@ -5,38 +5,14 @@ namespace App\Scraping;
 use App\BuyOrder;
 use Symfony\Component\DomCrawler\Crawler;
 
-class CardKingdomScraper
+class CardKingdomScraper extends Scraper
 {
-    protected $cardSet;
-    protected $cardName;
-    protected $cardIsFoil = false;
     protected $searchEndpoint = 'https://www.cardkingdom.com/purchasing/mtg_singles/';
     protected $searchQueryParams = [
         'filter[search]' => 'mtg_advanced'
     ];
 
-    public function foil($foil = true)
-    {
-        $this->cardIsFoil = $foil;
-
-        return $this;
-    }
-
-    public function cardName(string $cardName)
-    {
-        $this->cardName = $cardName;
-
-        return $this;
-    }
-
-    public function cardSet(string $cardSet)
-    {
-        $this->cardSet = $cardSet;
-
-        return $this;
-    }
-
-    public function getPrice()
+    protected function getSearchUrl()
     {
         $queryParams = array_merge($this->searchQueryParams, [
             'filter[name]' => $this->cardName,
@@ -46,28 +22,12 @@ class CardKingdomScraper
         ]);
         $queryString = http_build_query($queryParams);
 
-        $urlToScrape = $this->searchEndpoint . '?' . $queryString;
-        return $this->scrapeUrl($urlToScrape);
-
-        return $urlToScrape;
+        return $this->searchEndpoint . '?' . $queryString;
     }
 
-    protected function scrapeUrl($urlToScrape)
+    protected function resultsAreAmbiguous(Crawler $crawler)
     {
-        $crawler = \Goutte::request('GET', $urlToScrape);
-
-        // Check if we see that the card was not found.
-        if ($this->cardNotFound($crawler)) {
-            throw new BuyOrderNotFoundException('A buy order for "' . $this->cardName . '" could not be found.');
-        }
-
-        $results = $crawler->filter('.mainListing .itemRow');
-        if ($results->count() != 1) {
-            throw new AmbiguousResultsException('Expected 1 result, got ' . $results->count());
-        }
-        $firstItem = $results->first();
-
-        return $this->getBuyOrderFromListItem($firstItem);
+        return $crawler->filter('.mainListing .itemRow')->count() != 1;
     }
 
     protected function cardNotFound(Crawler $crawler)
@@ -79,7 +39,16 @@ class CardKingdomScraper
         }
     }
 
-    protected function getBuyOrderFromListItem($item)
+    protected function extractBuyOrders(Crawler $crawler)
+    {
+        $results = $crawler->filter('.mainListing .itemRow');
+
+        return $results->each(function (Crawler $node, $index) {
+            return $this->extractBuyOrder($node, $index);
+        });
+    }
+
+    protected function extractBuyOrder(Crawler $item, $index)
     {
         // Get the price in USD.
         $price = $item->filter('.usdSellPrice')->first();
