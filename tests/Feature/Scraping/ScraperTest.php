@@ -25,6 +25,16 @@ abstract class ScraperTest extends TestCase
         $this->assertRegexp('/\d+\.\d+/', $buyOrder->price);
     }
 
+    public function test_it_can_retrieve_quanity_buying()
+    {
+        $buyOrder = $this->getScraper()
+            ->cardName('Bloodstained Mire')
+            ->cardSet('Onslaught')
+            ->getBuyOrder();
+
+        $this->assertRegexp('/\d+/', $buyOrder->buying);
+    }
+
     public function test_it_handles_card_not_found()
     {
         $this->expectException(BuyOrderNotFoundException::class);
