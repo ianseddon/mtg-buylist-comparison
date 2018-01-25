@@ -40,6 +40,6 @@ class User extends Authenticatable
 
     public function collection()
     {
-        return $this->hasOne(CardList::class);
+        return $this->morphOne(CardList::class, 'listable');
     }
 }

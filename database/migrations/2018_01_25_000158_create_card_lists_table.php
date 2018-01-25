@@ -15,8 +15,9 @@ class CreateCardListsTable extends Migration
     {
         Schema::create('card_lists', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
             $table->string('name');
+            $table->integer('listable_id')->unsigned();
+            $table->string('listable_type');
             $table->timestamps();
         });
     }
