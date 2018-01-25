@@ -12,4 +12,9 @@ class CardList extends Model
     {
         return $this->morphTo();
     }
+
+    public function cards()
+    {
+        return $this->hasMany(CardListItem::class);
+    }
 }
