@@ -747,7 +747,7 @@ babel-register@^6.26.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
-babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
+babel-runtime@^6.0.0, babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   dependencies:
@@ -6692,6 +6692,12 @@ vue-template-compiler@^2.0.0:
 vue-template-es2015-compiler@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.6.0.tgz#dc42697133302ce3017524356a6c61b7b69b4a18"
+
+vue-typeahead@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/vue-typeahead/-/vue-typeahead-2.3.2.tgz#b0c10f1f9f64a2c667bff70a0166908ebd5ac904"
+  dependencies:
+    babel-runtime "^6.0.0"
 
 vue@^2.5.7:
   version "2.5.13"
