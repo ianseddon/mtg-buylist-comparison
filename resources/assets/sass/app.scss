@@ -5,5 +5,9 @@
 // Variables
 @import "variables";
 
+@import "~bulmaswatch/lux/variables";
+
 // Bulma
 @import "~bulma/bulma";
+
+@import "~bulmaswatch/lux/_overrides";
