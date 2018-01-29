@@ -1,7 +1,9 @@
 <template>
     <div>
-        <div class="control">
-            <button class="button is-primary" @click="addCardItem">+ Card</button>
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-primary" @click="addCardItem">&plus; Card</button>
+            </div>
         </div>
         <table class="table is-fullwidth is-hoverable">
             <thead>

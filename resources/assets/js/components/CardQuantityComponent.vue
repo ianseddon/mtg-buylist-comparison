@@ -1,6 +1,6 @@
 <template>
     <div class="card-quantity" @click="startEditing">
-        <a href="#" v-if="!editing">{{ mutableValue }}</a>
+        <a v-if="!editing">{{ mutableValue }}</a>
         <input type="number" min="1" class="input" size="4"
                v-if="editing"
                v-focus
