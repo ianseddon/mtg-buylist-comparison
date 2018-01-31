@@ -26,8 +26,9 @@ Vue.directive('focus', {
   });
 
 import CardList from './components/CardListComponent.vue';
+import CardListItemBuyPrice from './components/CardListItemBuyPrice.vue';
 
 const app = new Vue({
     el: '#app',
-    components: { CardList }
+    components: { CardList, CardListItemBuyPrice }
 });

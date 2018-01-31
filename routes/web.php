@@ -20,4 +20,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/lists/{cardList}', 'CardListController@show');
+Route::get('/lists/{cardList}/sell', 'CardListController@sell');
 Route::middleware('auth')->get('/collection', 'CardListController@showCollection');

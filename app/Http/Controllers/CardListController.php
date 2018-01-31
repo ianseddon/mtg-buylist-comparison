@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\CardList;
+use App\VendorSite;
+use App\Jobs\BuyPriceLookup;
 
 class CardListController extends Controller
 {
@@ -14,6 +16,35 @@ class CardListController extends Controller
     public function showCollection()
     {
         return $this->show(auth()->user()->collection);
+    }
+
+    public function showImport(CardList $cardList)
+    {
+        return view('card-list.import', ['card_list_id' => $cardList->id]);
+    }
+
+    public function sell(CardList $cardList)
+    {
+        // TODO: Don't hardcode this.
+        $cardsToSell = $cardList->cards;
+
+        // TODO: Don't hardcode this.
+        $vendorsToSellTo = VendorSite::all();
+
+        /*
+        // Dispatch price lookup jobs.
+        foreach ($cardsToSell as $cardToSell) {
+            foreach ($vendorsToSellTo as $vendorToSellTo) {
+                dispatch(new BuyPriceLookup($cardToSell, $vendorToSellTo));
+            }
+        }
+        */
+
+        return view('card-list.sell', [
+            'card_list_id' => $cardList->id,
+            'cards' => $cardsToSell,
+            'vendors' => $vendorsToSellTo,
+        ]);
     }
 
     /**

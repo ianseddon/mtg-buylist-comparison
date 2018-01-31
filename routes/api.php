@@ -18,3 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('list.cards', 'Api\CardListItemController');
+
+Route::get('vendor/{vendor}/lookup/{card}', function (App\VendorSite $vendor, App\CardListItem $card) {
+    dispatch(new App\Jobs\BuyPriceLookup($card, $vendor));
+});
