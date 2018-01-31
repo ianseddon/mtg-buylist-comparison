@@ -15,16 +15,6 @@
                             Manage
                         </a>
                     </li>
-                    {{--  <li>
-                        <a href="{{ action('CardListController@showImport', ['cardList' => $card_list_id]) }}">
-                            Import
-                        </a>
-                    </li>  --}}
-                    <li>
-                        <a href="{{ action('CardListController@sell', ['cardList' => $card_list_id]) }}">
-                            Sell
-                        </a>
-                    </li>
                 </ul>
             </div>
         </nav>
