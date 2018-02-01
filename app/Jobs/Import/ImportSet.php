@@ -2,17 +2,10 @@
 
 namespace App\Jobs\Import;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use App\Models\Reference\Set;
 
-class ImportSet implements ShouldQueue
+class ImportSet extends ImportJob
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
     protected $data;
 
     /**
@@ -20,8 +13,10 @@ class ImportSet implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct(array $data)
     {
+        parent::__construct();
+
         $this->data = $data;
     }
 
