@@ -34,6 +34,32 @@ class ImportCardsInSetTest extends TestCase
         $this->assertEmpty($set->cards);
     }
 
+    /** @test */
+    public function test_it_doesnt_create_duplicates_with_same_multiverse_id()
+    {
+        $set = factory(Set::class)->create();
+        $cards = $this->makeSampleImportedCards(2, ['multiverseid' => 1]);
+
+        dispatch_now(new ImportCardsInSet($set, $cards));
+
+        $this->assertCount(1, $set->cards);
+    }
+
+    /** @test */
+    public function test_it_updates_changed_cards()
+    {
+        $set = factory(Set::class)->create();
+        $cards = $this->makeSampleImportedCards(1);
+        dispatch_now(new ImportCardsInSet($set, $cards));
+
+        $newName = 'Name Changed!';
+        $cards[0]['name'] = $newName;
+        dispatch_now(new ImportCardsInSet($set, $cards));
+
+        $this->assertCount(1, $set->cards);
+        $this->assertEquals($newName, $set->cards->first()->name);
+    }
+
     /**
      * Create test card data that mirrors the
      * expected source JSON structure
