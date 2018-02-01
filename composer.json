@@ -10,6 +10,7 @@
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
         "pusher/pusher-php-server": "~3.0",
+        "salsify/json-streaming-parser": "^6.0",
         "weidner/goutte": "^1.0"
     },
     "require-dev": {
