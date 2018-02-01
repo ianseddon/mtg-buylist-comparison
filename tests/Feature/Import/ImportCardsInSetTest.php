@@ -5,11 +5,11 @@ namespace Tests\Feature\Import;
 use Tests\TestCase;
 use App\Jobs\Import\ImportCardsInSet;
 use App\Models\Reference\Set;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ImportCardsInSetTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function test_it_creates_cards_from_data()

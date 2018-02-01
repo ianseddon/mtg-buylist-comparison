@@ -6,12 +6,12 @@ use Tests\TestCase;
 use Illuminate\Support\Facades\Bus;
 use App\Jobs\Import\ImportSet;
 use App\Jobs\Import\ImportCardsInSet;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Reference\Set;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ImportSetTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     protected function setUp()
     {

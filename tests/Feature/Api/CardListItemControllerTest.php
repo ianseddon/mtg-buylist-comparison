@@ -4,12 +4,12 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\CardList;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Reference\Card;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CardListItemControllerTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     public function test_it_shows_all_cards_in_lists()
     {
@@ -63,7 +63,7 @@ class CardListItemControllerTest extends TestCase
         $card = $list->cards()->create($this->getTestCard());
 
         $card->fill([
-            'card_id' => factory(Card::class)->create()->id,
+            'card_id' => factory(Card::class)->create()->multiverse_id,
             'quantity' => 13,
             'foil' => true,
         ]);

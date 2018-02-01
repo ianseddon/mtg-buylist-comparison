@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Bus;
 use App\Jobs\Import\ImportSet;
 use App\Jobs\Import\ImportFromJson;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ImportFromJsonTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     protected function setUp()
     {
