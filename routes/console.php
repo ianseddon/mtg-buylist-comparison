@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Inspiring;
+use App\Jobs\Import\ImportFromJson;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,5 +19,5 @@ Artisan::command('inspire', function () {
 })->describe('Display an inspiring quote');
 
 Artisan::command('data:import', function () {
-    App\Jobs\Import\ImportFromJson::dispatch();
+    dispatch(new ImportFromJson());
 });
