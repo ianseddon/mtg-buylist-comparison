@@ -3,20 +3,28 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Reference\Card;
 
 class CardListItem extends Model
 {
-    protected $appends = ['card'];
-    protected $fillable = ['quantity', 'set', 'name', 'foil', 'language', 'condition'];
+    protected $with = ['card'];
+    protected $fillable = ['quantity', 'card_id', 'foil', 'language', 'condition'];
 
-    public function getCardAttribute()
+    /**
+     * Define the relationship to the card info.
+     *
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function card()
     {
-        return [
-            'name' => $this->name,
-            'set' => $this->set,
-        ];
+        return $this->belongsTo(Card::class, 'card_id', 'multiverse_id');
     }
 
+    /**
+     * Define the relationship to the list containing this item.
+     *
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function list()
     {
         return $this->belongsTo(CardList::class);

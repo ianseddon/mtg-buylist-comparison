@@ -3,6 +3,7 @@
 namespace App\Models\Reference;
 
 use Illuminate\Database\Eloquent\Model;
+use App\CardListItem;
 
 class Card extends Model
 {
@@ -10,6 +11,7 @@ class Card extends Model
     public $primaryKey = 'multiverse_id';
     public $incrementing = false;
 
+    protected $with = ['set'];
     protected $fillable = ['multiverse_id', 'name'];
 
     /**
@@ -20,5 +22,15 @@ class Card extends Model
     public function set()
     {
         return $this->belongsTo(Set::class);
+    }
+
+    /**
+     * Define the relationship to all list items for this card.
+     *
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function listItems()
+    {
+        return $this->hasMany(CardListItem::class);
     }
 }

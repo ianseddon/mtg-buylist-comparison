@@ -17,7 +17,7 @@
             </thead>
             <tbody>
                 <card-list-item
-                    v-for="(card, index) in cards"
+                    v-for="card in cards"
                     :key="card.id"
                     v-model="card.data"
                     @remove="removeCardItem(card)"
@@ -54,12 +54,15 @@ export default {
         addCardItem() {
             this.cards.push({
                 data: {
-                    'quantity': 1,
+                    quantity: 1,
                     card: {
-                        'name': '',
-                        'set': '',
+                        multiverse_id: null,
+                        name: '',
+                        set: {
+                            name: '',
+                        }
                     },
-                    'card_list_id': this.id,
+                    card_list_id: this.id,
                 }
             });
         },

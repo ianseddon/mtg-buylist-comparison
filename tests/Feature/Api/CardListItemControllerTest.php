@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\CardList;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Reference\Card;
 
 class CardListItemControllerTest extends TestCase
 {
@@ -23,7 +24,6 @@ class CardListItemControllerTest extends TestCase
     public function test_it_adds_cards_to_lists()
     {
         $list = $this->createCardList();
-
         $card = $this->getTestCard();
 
         $response = $this->json('POST', "/api/list/{$list->id}/cards", $card);
@@ -32,26 +32,38 @@ class CardListItemControllerTest extends TestCase
         $this->assertCount(1, $list->cards);
     }
 
-    public function test_it_shows_individual_cards_in_lists()
+    public function test_adding_cards_to_lists_returns_related_data()
     {
         $list = $this->createCardList();
 
+        $card = $this->getTestCard();
+
+        $response = $this->json('POST', "/api/list/{$list->id}/cards", $card)
+            ->assertJsonStructure([
+                'card' => [
+                    'set' => [],
+                ],
+            ]);
+    }
+
+    public function test_it_shows_individual_cards_in_lists()
+    {
+        $list = $this->createCardList();
         $card = $list->cards()->create($this->getTestCard());
 
         $response = $this->get("/api/list/{$list->id}/cards/{$card->id}");
 
         $response->assertStatus(200);
-        $response->assertJson($card->toArray());
+        $response->assertJson($card->load('card')->toArray());
     }
 
     public function test_it_updates_cards_in_lists()
     {
         $list = $this->createCardList();
-
         $card = $list->cards()->create($this->getTestCard());
 
         $card->fill([
-            'name' => 'Updated',
+            'card_id' => factory(Card::class)->create()->id,
             'quantity' => 13,
             'foil' => true,
         ]);
@@ -65,7 +77,6 @@ class CardListItemControllerTest extends TestCase
     public function test_it_deletes_cards_from_lists()
     {
         $list = $this->createCardList();
-
         $card = $list->cards()->create($this->getTestCard());
 
         $response = $this->delete("/api/list/{$list->id}/cards/{$card->id}");
@@ -78,17 +89,18 @@ class CardListItemControllerTest extends TestCase
     {
         $list = new CardList(['name' => 'Test']);
         $list->listable_id = 1;
-        $list->listable_type =  'App\User';
+        $list->listable_type = 'App\User';
         $list->save();
         return $list;
     }
 
     protected function getTestCard(array $attributes = [])
     {
+        $card = factory(Card::class)->create();
+
         return array_merge([
             'quantity' => 3,
-            'name' => 'Bloodstained Mire',
-            'set' => 'Onslaught',
+            'card_id' => $card->multiverse_id,
             'foil' => 0,
             'condition' => 'NM/M',
         ], $attributes);

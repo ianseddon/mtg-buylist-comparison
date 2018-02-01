@@ -7,7 +7,7 @@
             <card-name v-model="mutableCard.card" @input="cardNameChanged"></card-name>
         </td>
         <td>
-            {{ mutableCard.card.set }}
+            {{ mutableCard.card.set.name }}
         </td>
         <td>
             <input class="checkbox" type="checkbox" @change="cardIsFoilChanged" v-model="mutableCard.foil">
@@ -40,8 +40,9 @@ export default {
                 return {
                     quantity: 1,
                     card: {
+                        multiverse_id: null,
                         name: '',
-                        set: '',
+                        set: { name: '' },
                     },
                     foil: false,
                 }
@@ -60,6 +61,7 @@ export default {
     },
     methods: {
         cardNameChanged() {
+            this.mutableCard.card_id = this.mutableCard.card.multiverse_id;
             this.updateItem();
         },
         cardQuantityChanged() {
@@ -73,8 +75,6 @@ export default {
             // card data structure.
             // Flatten the card data structure.
             let cardData = this.mutableCard;
-            cardData.name = this.mutableCard.card.name;
-            cardData.set = this.mutableCard.card.set;
 
             // Only update if the card already has an ID set (already exits in DB).
             if (typeof this.mutableCard.id !== 'undefined') {

@@ -14,7 +14,7 @@
            @keydown.esc="stopEditing"
            @blur="stopEditing"
            @input="update"/>
-        
+
         <ul class="options-list" v-show="hasItems">
             <!-- for vue@1.0 use: ($item, item) -->
             <li v-for="(item, $item) in items" :class="activeClass($item)" @mousedown="hit" @mousemove="setActive($item)">
@@ -35,44 +35,27 @@ export default {
         prop: 'value',
     },
     props: {
-        value: {
-            default: function () {
-                return {
-                    name: '',
-                    set: '',
-                }
-            }
-        }
+        value: { required: true },
     },
     data() {
         return {
-            editing: !this.value.name,
-            // oldValue: {},
+            editing: !this.validate(this.value),
+
             card: this.value,
 
             // The source url
-            // (required)
             src: 'https://api.magicthegathering.io/v1/cards',
 
-            // The data that would be sent by request
-            // (optional)
-            // data: {},
-
             // Limit the number of items which is shown at the list
-            // (optional)
             limit: 5,
 
             // The minimum character length needed before triggering
-            // (optional)
             minChars: 3,
 
             // Highlight the first item in the list
-            // (optional)
             selectFirst: true,
 
             // Override the default value (`q`) of query parameter name
-            // Use a falsy value for RESTful query
-            // (optional)
             queryParamName: 'name'
         }
     },
@@ -89,8 +72,9 @@ export default {
         // Callback function triggered when an autocomplete option is chosen.
         onHit (item) {
             let card = {
+                multiverse_id: item.multiverseid,
                 name: item.name,
-                set: item.setName,
+                set: { name: item.setName },
             };
 
             // Check the chosen option is valid.
@@ -110,14 +94,14 @@ export default {
             this.editing = true;
         },
         validate(card) {
-            return card.hasOwnProperty('name') && card.name;
+            return card.hasOwnProperty('multiverse_id') && card.multiverse_id;
         },
         stopEditing() {
             // Don't submit changes if new value is not valid or if we are not editing.
             if (!this.validate(this.card) || !this.editing) {
                 return;
             }
-            
+
             // Reset the autocomplete text field.
             this.reset();
 
@@ -128,7 +112,7 @@ export default {
             this.$emit('input', this.card);
         }
     }
-}    
+}
 </script>
 
 <style>
@@ -168,5 +152,5 @@ export default {
 
 .card-name ul.options-list li.active, .card-name ul.options-list li:hover {
     background: #f8f8f8;
-}    
+}
 </style>

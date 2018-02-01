@@ -6,6 +6,7 @@ use App\CardList;
 use App\CardListItem;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Reference\Card;
 
 class CardListItemController extends Controller
 {
@@ -27,9 +28,11 @@ class CardListItemController extends Controller
      */
     public function store(Request $request, CardList $list)
     {
-        $cardListItem = $list->cards()->create($request->input());
+        $cardListItem = $list->cards()
+            ->create($request->input())
+            ->load('card');
 
-        return response()->json($cardListItem->toArray());
+        return $cardListItem->toArray();
     }
 
     /**
