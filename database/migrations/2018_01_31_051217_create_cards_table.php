@@ -14,9 +14,10 @@ class CreateCardsTable extends Migration
     public function up()
     {
         Schema::create('cards', function (Blueprint $table) {
-            $table->integer('set_id')
-                ->unsigned();
+            $table->primary('multiverse_id');
             $table->integer('multiverse_id')
+                ->unsigned();
+            $table->integer('set_id')
                 ->unsigned();
             $table->string('name');
             $table->timestamps();

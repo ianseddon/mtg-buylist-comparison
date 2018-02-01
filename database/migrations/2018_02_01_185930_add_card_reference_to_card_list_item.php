@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RemoveCardDataFromListItem extends Migration
+class AddCardReferenceToCardListItem extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,14 @@ class RemoveCardDataFromListItem extends Migration
     public function up()
     {
         Schema::table('card_list_items', function (Blueprint $table) {
-            $table->dropColumn(['name', 'set']);
+            $table->integer('card_id')
+                ->unsigned();
+        });
+
+        Schema::table('card_list_items', function (Blueprint $table) {
+            $table->foreign('card_id')
+                ->references('multiverse_id')
+                ->on('cards');
         });
     }
 
@@ -26,8 +33,8 @@ class RemoveCardDataFromListItem extends Migration
     public function down()
     {
         Schema::table('card_list_items', function (Blueprint $table) {
-            $table->string('name');
-            $table->string('set');
+            $table->dropForeign(['card_id']);
+            $table->dropColumn('card_id');
         });
     }
 }
