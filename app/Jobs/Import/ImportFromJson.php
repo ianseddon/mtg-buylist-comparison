@@ -20,10 +20,7 @@ class ImportFromJson extends ImportJob
      */
     public function __construct($filePath = null)
     {
-        // If we didn't get an override path, just use the default location.
-        if (empty($filePath)) {
-            $filePath = storage_path() . '/app/AllSets.json';
-        }
+        parent::__construct();
 
         $this->filePath = $filePath;
     }
@@ -35,6 +32,11 @@ class ImportFromJson extends ImportJob
      */
     public function handle()
     {
+        // If we didn't get an override path, just use the default location.
+        if (empty($this->filePath)) {
+            $this->filePath = storage_path() . '/app/AllSets.json';
+        }
+
         $stream = fopen($this->filePath, 'r');
         $listener = new ImportJsonConsumeSetListener();
         $this->parser = new \JsonStreamingParser\Parser(
