@@ -15,7 +15,8 @@ class AddCardReferenceToCardListItem extends Migration
     {
         Schema::table('card_list_items', function (Blueprint $table) {
             $table->integer('card_id')
-                ->unsigned();
+                ->unsigned()
+                ->default(0); // This is to make sqlite happy.
         });
 
         Schema::table('card_list_items', function (Blueprint $table) {

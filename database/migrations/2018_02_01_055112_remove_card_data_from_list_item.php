@@ -26,8 +26,9 @@ class RemoveCardDataFromListItem extends Migration
     public function down()
     {
         Schema::table('card_list_items', function (Blueprint $table) {
-            $table->string('name');
-            $table->string('set');
+            // Defaults are to keep SQLite happy.
+            $table->string('name')->default('default_value');
+            $table->string('set')->default('default_value');
         });
     }
 }
